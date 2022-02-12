@@ -1,18 +1,18 @@
-import type { Axios } from "axios";
-
 export interface CpkProvider {
     name: string;
+    config?: Record<string, any>;
     coinsSupported: string[] | "any";
     currenciesSupported: string[] | "any";
-
-    getPrice(pair: string, currency: string, ttl: string): Promise<number>;
-    getManyPrices(pairs: string[], ttl: string): Promise<Record<string, number>>;
+    getPrice(coin: string, currency: string): Promise<number>;
+    getManyPrices(pairs: { coin: string; currency: string }[]): Promise<Record<string, number>>;
 }
 
-export type CpkProviderFn = (axios: Axios) => CpkProvider;
-
+export type CpkProviderFn = (config?: Record<string, any>) => CpkProvider;
 export type CpkProviders = CpkProvider[];
 
-export function defineCpkProvider(provider: CpkProviderFn) {
-    return provider;
+export function defineCpkProvider(provider: CpkProvider): CpkProviderFn {
+    return (config?: Record<string, any>) => {
+        if (config) provider.config = config;
+        return provider;
+    };
 }

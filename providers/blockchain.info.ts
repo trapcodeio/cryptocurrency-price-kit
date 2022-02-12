@@ -2,9 +2,19 @@ import { defineCpkProvider } from "../src/provider";
 import axios from "axios";
 import { Obj } from "object-collection/exports";
 
-const endpoint = `https://blockchain.info/ticker`;
+const endpoint = "https://blockchain.info/ticker";
+type endpointResponse = Record<
+    string,
+    {
+        "15m": number;
+        last: number;
+        buy: number;
+        sell: number;
+        symbol: string;
+    }
+>;
 
-export default defineCpkProvider(() => ({
+export default defineCpkProvider({
     name: "blockchain.info",
     coinsSupported: ["BTC"],
     currenciesSupported: [
@@ -37,25 +47,16 @@ export default defineCpkProvider(() => ({
         "USD"
     ],
 
-    async getPrice(pair, currency, ttl) {
+    async getPrice(pair, currency) {
         try {
-            const res = await axios.get<
-                Record<
-                    string,
-                    {
-                        "15m": number;
-                        last: number;
-                        buy: number;
-                        sell: number;
-                        symbol: string;
-                    }
-                >
-            >(endpoint);
+            // Get data from endpoint
+            const res = await axios.get<endpointResponse>(endpoint);
 
+            // Use object-collection to get the price
             let data = Obj(res.data);
+
             if (data.has(`${currency}[15m]`)) {
                 return data.get<number>(`${currency}[15m]`);
-            } else {
             }
         } catch (e) {
             console.log(e);
@@ -65,7 +66,25 @@ export default defineCpkProvider(() => ({
         throw new Error(`No data for ${currency} in ${this.name}`);
     },
 
-    async getManyPrices(pairs, ttl) {
-        return { "BTC/USD": 535999 };
+    async getManyPrices(pairs) {
+        const result: Record<string, number> = {};
+
+        try {
+            const res = await axios.get<endpointResponse>(endpoint);
+
+            let data = Obj(res.data);
+
+            for (let pair of pairs) {
+                const { coin, currency } = pair;
+                if (data.has(`${currency}[15m]`)) {
+                    result[coin + "/" + currency] = data.get<number>(`${currency}[15m]`);
+                }
+            }
+        } catch (e) {
+            console.log(e);
+            throw new Error(`Error fetching price from ${endpoint}`);
+        }
+
+        return result;
     }
-}));
+});
