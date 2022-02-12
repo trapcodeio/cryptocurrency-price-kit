@@ -1,0 +1,13 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+node_modules
+tests
+
+
+yarn.lock
+*.log
+
+*.ts
+!*.d.ts
+JapaFile.js
+tsconfig.json

@@ -1,0 +1,27 @@
+{
+  "name": "cryptocurrency-price-kit",
+  "version": "0.0.1",
+  "description": "The best price kit you need when working with crypto currencies with realtime and multiple providers support.",
+  "main": "index.js",
+  "repository": "https://gthub.com/trapcodeio/cryptocurrency-price-kit.git",
+  "author": "trapcodeio",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "watch": "tsc --watch",
+    "test": "node JapaFile.js",
+    "test-dev": "npx nodemon JapaFile.js --watch 'tests/**' --ext 'ts'",
+    "play": "nodemon tests/play.js"
+  },
+  "devDependencies": {
+    "japa": "^4.0.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "axios": "^0.25.0",
+    "object-collection": "^3.0.0"
+  }
+}
