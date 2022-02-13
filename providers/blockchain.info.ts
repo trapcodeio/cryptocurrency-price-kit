@@ -14,7 +14,7 @@ type endpointResponse = Record<
     }
 >;
 
-export default defineCpkProvider(() => ({
+export = defineCpkProvider(() => ({
     name: "blockchain.info",
     coinsSupported: ["BTC"],
     currenciesSupported: [

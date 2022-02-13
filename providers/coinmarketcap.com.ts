@@ -1,7 +1,7 @@
 import { defineCpkProvider } from "../src/provider";
 import axios from "axios";
 
-export default defineCpkProvider<{ apiKey: string }>((config) => {
+export = defineCpkProvider<{ apiKey: string }>((config) => {
     if (!config) throw new Error("CoinMarketCap requires a config object");
 
     let baseUrl = "https://pro-api.coinmarketcap.com";

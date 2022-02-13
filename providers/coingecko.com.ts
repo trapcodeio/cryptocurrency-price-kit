@@ -1,6 +1,6 @@
 import { defineCpkProvider } from "../src/provider";
 
-export default defineCpkProvider(() => {
+export = defineCpkProvider(() => {
     return {
         name: "coingecko.com",
         coinsSupported: "any",
