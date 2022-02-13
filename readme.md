@@ -15,21 +15,28 @@ The best Nodejs price kit you need when working with cryptocurrencies with multi
 const {Cpk} = require('cryptocurrency-price-kit');
 const Livecoinwatch = require("cryptocurrency-price-kit/providers/livecoinwatch.com");
 
-Cpk.useProviders([Livecoinwatch({apiKey: 'your-api-key'})])
+async function Run(){
+  Cpk.useProviders([Livecoinwatch({apiKey: 'your-api-key'})])
+  
+  // Initialize with config
+  const cpk = new Cpk('livecoinwatch.com');
+  
+  // Get bitcoin Price and cache for 60 secs by default
+  const price = await cpk.get('BTC/USD');
+  // or with custom cache time
+  const price2 = await cpk.get('BNB/USD', 120); // seconds
+  
+  console.log('BTC/USD', price) // The current price of bitcoin in USD
+  console.log('BNB/USD', price2) // The current price of bitcoin in USD
+  
+  // OR
+  // GET Many Prices and cache for 60 secs
+  const prices = await cpk.getMany(['BTC/USD', 'ETH/USD', "BNB/USD"], 60);
+  console.log('Many:', prices) // {BTC/USD: price, ETH/USD: price, BNB/USD: price}
+}
 
-// Initialize with config
-const cpk = new Cpk('livecoinwatch.com');
+Run().catch(console.error);
 
-// Get bitcoin Price and cache for 60 secs by default
-const price = await cpk.get('BTC/USD');
-// or with custom cache time
-const price = await cpk.get('BTC/USD', 120); // seconds
-
-console.log(price) // The current price of bitcoin in USD
-
-// OR
-// GET Many Prices and cache for 60 secs
-const prices = await cpk.getMany(['BTC/USD', 'ETH/USD'], 60);
 ```
 
 ### What you should know.
