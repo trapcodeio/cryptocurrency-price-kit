@@ -37,6 +37,7 @@ const prices = await cpk.getMany(['BTC/USD', 'ETH/USD'], 60);
 - `cache` is enabled by default (tll: 60 seconds)
 - If currency is not defined, it will be `USD`
 - Error is thrown if request is not successful, so you should catch all requests.
+- We prefer `cache` over interval because it is more reliable. with `interval pulling` you may make unnecessary requests when not needed.
 
 ### Supported providers
 
@@ -48,8 +49,8 @@ const prices = await cpk.getMany(['BTC/USD', 'ETH/USD'], 60);
 #### Adding custom provider
 This can be achieved in two ways.
 
-- Create an issue on GitHub requesting a certain provider, and we will try to add it. (`Try` if the provider documentation is clear we add it)
-- See how to create it yourself: [How to create a custom provider](#how-to-create-a-custom-provider)
+- Create an issue on GitHub requesting a certain provider, and we will try to add it. (`Try` if the provider documentation is clear enough.)
+- OR See how to create it yourself: [How to create a custom provider](#how-to-create-a-custom-provider)
 
 ### What may come in the future.
 - Fallback to other providers if the first one fails.
