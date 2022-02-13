@@ -7,8 +7,5 @@ BraveCache.registerProvider(LRUCacheProvider());
 // Set Default Provider
 BraveCache.setDefaultProvider("lru-cache");
 
-// Initialize Cache
-const cache = new BraveCache();
-
 // Export Cache
-export default cache;
+export default BraveCache;

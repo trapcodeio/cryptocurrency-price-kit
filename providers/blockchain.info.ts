@@ -14,7 +14,7 @@ type endpointResponse = Record<
     }
 >;
 
-export default defineCpkProvider({
+export default defineCpkProvider(() => ({
     name: "blockchain.info",
     coinsSupported: ["BTC"],
     currenciesSupported: [
@@ -58,8 +58,7 @@ export default defineCpkProvider({
             if (data.has(`${currency}[15m]`)) {
                 return data.get<number>(`${currency}[15m]`);
             }
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
             throw new Error(`Error fetching price from ${endpoint}`);
         }
 
@@ -87,4 +86,4 @@ export default defineCpkProvider({
 
         return result;
     }
-});
+}));

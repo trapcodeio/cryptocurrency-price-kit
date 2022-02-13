@@ -1,15 +1,17 @@
 import { CpkProvider, CpkProviderFn } from "./src/provider";
-import cache from "./src/cache";
+import Cache from "./src/cache";
+import { pairString } from "./src/functions";
 
 const Providers: Record<string, CpkProvider> = {};
 
 export class Cpk {
     public provider: CpkProvider;
-    public cache: boolean = true;
+    public useCache: boolean = true;
+    public cache?: Cache;
 
-    static useProviders(providerFns: (CpkProvider | CpkProviderFn)[] = []) {
+    static useProviders(providers: Array<CpkProvider | CpkProviderFn<any>> = []) {
         // Loop and add providers
-        for (const fn of providerFns) {
+        for (const fn of providers) {
             if (typeof fn === "function") {
                 const provider = fn();
                 Providers[provider.name] = provider;
@@ -31,14 +33,21 @@ export class Cpk {
             throw new Error(`Provider (${providerName}) not found`);
         }
 
+        if (this.useCache) {
+            this.cache = new Cache({
+                prefix: providerName
+            });
+        }
+
         this.provider = Providers[providerName];
     }
 
     /**
-     * Disable cache
+     * Disable useCache
      */
     disableCache() {
-        this.cache = false;
+        this.useCache = false;
+        this.cache = undefined;
         return this;
     }
 
@@ -50,22 +59,30 @@ export class Cpk {
     async get(pair: string, ttl: number = 60) {
         const [coin, currency] = this.parsePair(pair);
 
-        // if cache is enabled, check cache first
+        // if useCache is enabled, check useCache first
         if (this.cache)
-            return cache.getOrSetAsync(pair, () => this.provider.getPrice(coin, currency), ttl);
+            return this.cache.getOrSetAsync(
+                pairString(coin, currency),
+                () => this.provider.getPrice(coin, currency),
+                ttl
+            );
 
         return this.provider.getPrice(coin, currency);
     }
 
     async getMany(pairs: string[], ttl: number = 60) {
-        const results: Record<string, number> = {};
+        let results: Record<string, number> = {};
         const pairsNotInCache: string[] = [];
 
-        // if cache is enabled, check cache first
+        // if useCache is enabled, check useCache first
         if (this.cache) {
             for (const pair of pairs) {
-                if (cache.has(pair)) results[pair] = cache.get(pair);
-                else pairsNotInCache.push(pair);
+                const [, , paired] = this.parsePair(pair);
+                if (this.cache.has(paired)) {
+                    results[paired] = this.cache.get(paired);
+                } else {
+                    pairsNotInCache.push(paired);
+                }
             }
         }
 
@@ -76,12 +93,16 @@ export class Cpk {
             data.push({ coin, currency });
         }
 
-        const prices = await this.provider.getManyPrices(data);
-        if (this.cache) {
-            for (const pair of Object.keys(prices)) cache.set(pair, prices[pair], ttl);
+        if (data.length) {
+            const prices = await this.provider.getManyPrices(data);
+            if (this.cache) {
+                for (const pair of Object.keys(prices)) this.cache.set(pair, prices[pair], ttl);
+            }
+
+            results = Object.assign(results, prices);
         }
 
-        return prices;
+        return results;
     }
 
     /**
@@ -121,9 +142,7 @@ export class Cpk {
             );
         }
 
-        console.log(this.provider.config);
-
         // check if coin exists in the provider
-        return [coin, currency];
+        return [coin, currency, pairString(coin, currency)];
     }
 }

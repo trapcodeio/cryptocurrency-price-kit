@@ -25,6 +25,7 @@
     "axios": "^0.25.0",
     "brave-cache": "^0.1.5",
     "lru-cache": "^6.0.0",
-    "object-collection": "^3.0.0"
+    "object-collection": "^3.0.0",
+    "stack-promise": "^0.1.2"
   }
 }
