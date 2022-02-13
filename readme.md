@@ -22,8 +22,10 @@ Cpk.useProviders([
 // Initialize with config
 const cpk = new Cpk('livecoinwatch.com');
 
-// Get bitcoin Price and cache for 60 secs
-const price = await cpk.get('BTC/USD', 60);
+// Get bitcoin Price and cache for 60 secs by default
+const price = await cpk.get('BTC/USD');
+// or with custom cache time
+const price = await cpk.get('BTC/USD', 120); // seconds
 
 console.log(price) // The current price of bitcoin in USD
 
