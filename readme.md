@@ -1,6 +1,6 @@
 # Cryptocurrency Price Kit 
 ###### STAGE: `DEVELOPMENT`
-The best price kit you need when working with cryptocurrencies with multiple providers support.
+The best Nodejs price kit you need when working with cryptocurrencies with multiple providers support.
 
 ## Goal
  - To provide a simple and easy to use API for working with cryptocurrency prices.
@@ -11,13 +11,11 @@ The best price kit you need when working with cryptocurrencies with multiple pro
 
 ## Easy As
 
-```typescript
-import {Cpk} from 'cryptocurrency-price-kit';
-import Livecoinwatch from "cryptocurrency-price-kit/providers/livecoinwatch.com";
+```js
+const {Cpk} = require('cryptocurrency-price-kit');
+const Livecoinwatch = require("cryptocurrency-price-kit/providers/livecoinwatch.com");
 
-Cpk.useProviders([
-    Livecoinwatch({apiKey: 'your-api-key'})
-])
+Cpk.useProviders([Livecoinwatch({apiKey: 'your-api-key'})])
 
 // Initialize with config
 const cpk = new Cpk('livecoinwatch.com');
@@ -65,8 +63,8 @@ This can be achieved in two ways.
 ### How to create a custom provider
 Creating a custom provider is as easy as.
 
-```typescript
-import {defineCpkProvider} from "cryptocurrency-price-kit/src/provider";
+```js
+const {defineCpkProvider} = require("cryptocurrency-price-kit/src/provider");
 
 // Define a provider
 // `config` is an object that contains the configuration passed for the provider.
@@ -98,6 +96,8 @@ const CustomProvider = defineCpkProvider((config) => {
        }
    }
 })
+
+module.exports = CustomProvider;
 ```
 That's all 😁, all cache function is handled by the package, so you don't need to worry about it.
 Only return the values, and we will handle the rest.
