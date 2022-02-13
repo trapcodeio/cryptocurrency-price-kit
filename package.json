@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "The best price kit you need when working with crypto currencies with realtime and multiple providers support.",
   "main": "index.js",
-  "repository": "https://gthub.com/trapcodeio/cryptocurrency-price-kit.git",
+  "repository": "https://github.com/trapcodeio/cryptocurrency-price-kit.git",
   "author": "trapcodeio",
   "license": "MIT",
   "private": false,

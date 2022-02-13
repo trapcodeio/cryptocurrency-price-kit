@@ -59,7 +59,7 @@ export class Cpk {
     async get(pair: string, ttl: number = 60) {
         const [coin, currency] = this.parsePair(pair);
 
-        // if useCache is enabled, check useCache first
+        // if cache is enabled, check cache first
         if (this.cache)
             return this.cache.getOrSetAsync(
                 pairString(coin, currency),
@@ -74,7 +74,7 @@ export class Cpk {
         let results: Record<string, number> = {};
         const pairsNotInCache: string[] = [];
 
-        // if useCache is enabled, check useCache first
+        // if cache is enabled, check cache first
         if (this.cache) {
             for (const pair of pairs) {
                 const [, , paired] = this.parsePair(pair);

@@ -1,11 +1,11 @@
 # Cryptocurrency Price Kit 
 ###### STAGE: `DEVELOPMENT`
-The best price kit you need when working with cryptocurrencies with multiple useProviders support.
+The best price kit you need when working with cryptocurrencies with multiple providers support.
 
 ## Goal
  - To provide a simple and easy to use API for working with cryptocurrency prices.
- - To provide a simple API to support multiple data useProviders
- - To provide useCache support and interval data fetching.
+ - To provide a simple API to support multiple data providers
+ - To provide cache support, so you only send request to the provider once per minute.
  - To support as many providers as possible.
 
 
@@ -22,19 +22,19 @@ Cpk.useProviders([
 // Initialize with config
 const cpk = new Cpk('livecoinwatch.com');
 
-// Get bitcoin Price and useCache for 60 secs
+// Get bitcoin Price and cache for 60 secs
 const price = await cpk.get('BTC/USD', 60);
 
 console.log(price) // The current price of bitcoin in USD
 
 // OR
-// GET Many Prices and useCache for 60 secs
+// GET Many Prices and cache for 60 secs
 const prices = await cpk.getMany(['BTC/USD', 'ETH/USD'], 60);
 ```
 
 ### What you should know.
 - Default currency is `USD`
-- `cache` is enabled by default
+- `cache` is enabled by default (tll: 60 seconds)
 - If currency is not defined, it will be `USD`
 - Error is thrown if request is not successful, so you should catch all requests.
 
@@ -46,12 +46,13 @@ const prices = await cpk.getMany(['BTC/USD', 'ETH/USD'], 60);
 - [coinmarketcap.com](https://coinmarketcap.com)
 
 #### Adding custom provider
-This can be achieved in two alwaysStrict
+This can be achieved in two ways.
 
 - Create an issue on GitHub requesting a certain provider, and we will try to add it. (`Try` if the provider documentation is clear we add it)
 - See how to create it yourself: [How to create a custom provider](#how-to-create-a-custom-provider)
 
 ### What may come in the future.
+- Fallback to other providers if the first one fails.
 - Command line support: E.g. `npx cpk update-supported-data` should update the providers supported coins and currency array. 
       This is considered important because the majority of the providers have an endpoint where your can get the coins and currency they support.
       <br> if supported coins and currency are updated frequently, it will reduce the amount of error requests that may cost you depending on your provider.
