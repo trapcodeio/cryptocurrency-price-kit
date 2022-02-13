@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "prepublishOnly": "npx tsc",
     "watch": "tsc --watch",
     "test": "node JapaFile.js",
     "test-dev": "npx nodemon JapaFile.js --watch 'tests/**' --ext 'ts'",
@@ -27,5 +28,13 @@
     "lru-cache": "^6.0.0",
     "object-collection": "^3.0.0",
     "stack-promise": "^0.1.2"
-  }
+  },
+  "keywords": [
+    "coinmarketcap",
+    "coingecko",
+    "livecoinwatch",
+    "blockchain.info",
+    "cryptocurrency",
+    "price"
+  ]
 }
