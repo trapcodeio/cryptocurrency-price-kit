@@ -94,7 +94,7 @@ export class Cpk {
         }
 
         if (data.length) {
-            const prices = await this.provider.getManyPrices(data);
+            const prices = await this.provider.getPrices(data);
             if (this.cache) {
                 for (const pair of Object.keys(prices)) this.cache.set(pair, prices[pair], ttl);
             }

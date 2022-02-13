@@ -35,7 +35,7 @@ export default defineCpkProvider<{ apiKey: string }>((config) => {
             }
         },
 
-        async getManyPrices(pairs: { coin: string; currency: string }[]) {
+        async getPrices(pairs: { coin: string; currency: string }[]) {
             const endpoint = `${baseUrl}/v2/cryptocurrency/quotes/latest`;
             let data: any = undefined;
             const result: Record<string, number> = {};

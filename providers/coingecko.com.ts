@@ -72,7 +72,7 @@ export default defineCpkProvider(() => {
             return 0;
         },
 
-        async getManyPrices(pairs) {
+        async getPrices(pairs) {
             return { "BTC/USD": 0 };
         }
     };

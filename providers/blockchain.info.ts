@@ -65,7 +65,7 @@ export default defineCpkProvider(() => ({
         throw new Error(`No data for ${currency} in ${this.name}`);
     },
 
-    async getManyPrices(pairs) {
+    async getPrices(pairs) {
         const result: Record<string, number> = {};
 
         try {

@@ -194,7 +194,7 @@ export default defineCpkProvider<{ apiKey: string }>((config) => {
             }
         },
 
-        async getManyPrices(pairs) {
+        async getPrices(pairs) {
             const result: Record<string, number> = {};
             const tasks = [];
 

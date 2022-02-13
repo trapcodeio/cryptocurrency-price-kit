@@ -5,7 +5,7 @@ export interface CpkProvider {
 
     getPrice(coin: string, currency: string): Promise<number>;
 
-    getManyPrices(pairs: { coin: string; currency: string }[]): Promise<Record<string, number>>;
+    getPrices(pairs: { coin: string; currency: string }[]): Promise<Record<string, number>>;
 }
 
 export type CpkProviderFn<Config = Record<string, any>> = (config?: Config) => CpkProvider;
