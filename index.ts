@@ -29,6 +29,8 @@ export class Cpk {
      * ===============================================
      */
     constructor(providerName: string) {
+        providerName = providerName.toLowerCase();
+
         if (!Providers[providerName]) {
             throw new Error(`Provider (${providerName}) not found`);
         }

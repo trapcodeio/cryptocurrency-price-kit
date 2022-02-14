@@ -13,26 +13,42 @@ The best Nodejs price kit you need when working with cryptocurrencies with multi
 
 ```js
 const {Cpk} = require('cryptocurrency-price-kit');
-const Livecoinwatch = require("cryptocurrency-price-kit/providers/livecoinwatch.com");
+const BlockchainInfo = require("cryptocurrency-price-kit/providers/blockchain.info");
+const CoinGecko = require("cryptocurrency-price-kit/providers/coingecko.com");
+const LiveCoinWatch = require("cryptocurrency-price-kit/providers/livecoinwatch.com");
+
+// Add Providers
+Cpk.useProviders([
+    BlockchainInfo, // supports bitcoin only
+    CoinGecko, // supports almost all coins
+    LiveCoinWatch({apiKey: "your-api-key"}), // supports almost all coins
+])
+
 
 async function Run(){
-  Cpk.useProviders([Livecoinwatch({apiKey: 'your-api-key'})])
-  
-  // Initialize with config
-  const cpk = new Cpk('livecoinwatch.com');
+  // Initialize
+  const blockchain = new Cpk('blockchain.info');
+  const coingecko = new Cpk('coingecko.com');
+  const livecoinwatch = new Cpk('livecoinwatch.com');
   
   // Get bitcoin Price and cache for 60 secs by default
-  const price = await cpk.get('BTC/USD');
+  const price = await blockchain.get('BTC');
   // or with custom cache time
-  const price2 = await cpk.get('BNB/USD', 120); // seconds
+  const price2 = await blockchain.get('BTC/EUR', 120); // seconds
   
-  console.log('BTC/USD', price) // The current price of bitcoin in USD
-  console.log('BNB/USD', price2) // The current price of bitcoin in USD
+  console.log("Blockchain - BTC/USD:", price); // The current price of bitcoin in USD
+  console.log("Blockchain - BTC/EUR:", price2); // The current price of bitcoin in USD
   
   // OR
   // GET Many Prices and cache for 60 secs
-  const prices = await cpk.getMany(['BTC/USD', 'ETH/USD', "BNB/USD"], 60);
-  console.log('Many:', prices) // {BTC/USD: price, ETH/USD: price, BNB/USD: price}
+  const prices = await livecoinwatch.getMany(['BTC/USD', 'ETH/USD', "BNB/USD"], 60);
+  console.log('LiveCoinWatch - Many:', prices) // {BTC/USD: price, ETH/USD: price, BNB/USD: price}
+  
+  // Also supports using the symbol your provider supports
+  // e.g coingecko supports using code instead of symbol
+  // i.e `bitcoin` instead of `BTC`
+  const prices2 = await coingecko.getMany(["BITCOIN/EUR", "ETHEREUM", "KADENA"], 60);
+  console.log("CoinGecko: Many:", prices2); // {BITCOIN/EUR: price, ETHEREUM/USD: price, KADENA/USD: price}
 }
 
 Run().catch(console.error);
@@ -108,3 +124,16 @@ module.exports = CustomProvider;
 ```
 That's all 😁, all cache function is handled by the package, so you don't need to worry about it.
 Only return the values, and we will handle the rest.
+
+
+### Sponsor/support
+If you like this project, you can support it. Any amount can keep the coffee going. 😁
+
+| Coin          | Address                                      |
+|---------------|----------------------------------------------|
+| BTC           | bc1q4el6ukfe0762rng62gw9augvq49evj3rxh6w09   |
+| ETH           | 0xb39bD9cF75BF29888cB80Cf374ee0822714E31a5   |
+| Solana        | BxcHDVsrk1Y9sX5vqskcMJDhHDT8HkqgYQdZGFMuZKPd |
+| Polygon Matic | 0x14033a7232232cf3c6a0671f00ad015df6a6c220   |
+
+If you want to be listed as sponsor after sending a donation, please contact [hello@trapcode.io](mailto:hello@trapcode.io)
