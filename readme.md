@@ -8,6 +8,12 @@ The best Nodejs price kit you need when working with cryptocurrencies with multi
  - To provide cache support, so you only send request to the provider once per minute.
  - To support as many providers as possible.
 
+## Installation
+```shell
+npm install cryptocurrency-price-kit
+# OR
+yarn add cryptocurrency-price-kit
+```
 
 ## Easy As
 
