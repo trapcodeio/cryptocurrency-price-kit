@@ -1,6 +1,7 @@
 import { defineCpkProvider } from "../src/provider";
 import axios from "axios";
 import { Obj } from "object-collection/exports";
+import { pairString } from "../src/functions";
 
 const endpoint = "https://blockchain.info/ticker";
 type endpointResponse = Record<
@@ -76,7 +77,7 @@ export = defineCpkProvider(() => ({
             for (let pair of pairs) {
                 const { coin, currency } = pair;
                 if (data.has(`${currency}[15m]`)) {
-                    result[coin + "/" + currency] = data.get<number>(`${currency}[15m]`);
+                    result[pairString(coin, currency)] = data.get<number>(`${currency}[15m]`);
                 }
             }
         } catch (e) {

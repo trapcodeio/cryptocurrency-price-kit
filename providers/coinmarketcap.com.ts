@@ -1,17 +1,18 @@
 import { defineCpkProvider } from "../src/provider";
 import axios from "axios";
+import { pairString } from "../src/functions";
 
 export = defineCpkProvider<{ apiKey: string }>((config) => {
     if (!config) throw new Error("CoinMarketCap requires a config object");
 
-    let baseUrl = "https://pro-api.coinmarketcap.com";
+    const baseUrl = "https://pro-api.coinmarketcap.com";
 
     return {
         name: "coinmarketcap",
         coinsSupported: "any",
         currenciesSupported: "any",
 
-        async getPrice(coin: string, currency: string) {
+        async getPrice(coin, currency) {
             const endpoint = `${baseUrl}/v2/tools/price-conversion`;
             try {
                 const { data } = await axios.get(endpoint, {
@@ -35,7 +36,7 @@ export = defineCpkProvider<{ apiKey: string }>((config) => {
             }
         },
 
-        async getPrices(pairs: { coin: string; currency: string }[]) {
+        async getPrices(pairs) {
             const endpoint = `${baseUrl}/v2/cryptocurrency/quotes/latest`;
             let data: any = undefined;
             const result: Record<string, number> = {};
@@ -61,16 +62,15 @@ export = defineCpkProvider<{ apiKey: string }>((config) => {
             for (const pair of pairs) {
                 if (!data.hasOwnProperty(pair.coin)) throw new Error(`Coin ${pair.coin} not found`);
                 const items = data[pair.coin] as { quote: Record<string, any> }[];
-                const pairString = `${pair.coin}/${pair.currency}`;
+                const paired = pairString(pair.coin, pair.currency);
 
                 for (const item of items) {
                     if (item.quote.hasOwnProperty(pair.currency)) {
-                        result[pairString] = item.quote[pair.currency].price;
+                        result[paired] = item.quote[pair.currency].price;
                     }
                 }
 
-                if (!result.hasOwnProperty(pairString))
-                    throw new Error(`Pair ${pairString} not found`);
+                if (!result.hasOwnProperty(paired)) throw new Error(`Pair ${paired} not found`);
             }
 
             return result;

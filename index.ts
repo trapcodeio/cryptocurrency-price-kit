@@ -8,6 +8,7 @@ export class Cpk {
     public provider: CpkProvider;
     public useCache: boolean = true;
     public cache?: Cache;
+    public currency: string = "USD";
 
     static useProviders(providers: Array<CpkProvider | CpkProviderFn<any>> = []) {
         // Loop and add providers
@@ -50,6 +51,26 @@ export class Cpk {
     disableCache() {
         this.useCache = false;
         this.cache = undefined;
+        return this;
+    }
+
+    /**
+     * Set currency
+     */
+    setCurrency(currency: string) {
+        currency = currency.toUpperCase();
+
+        // Check if currency is in the provider
+        if (
+            this.provider.coinsSupported !== "any" &&
+            !this.provider.currenciesSupported.includes(currency)
+        ) {
+            throw new Error(
+                `Currency (${currency}) not supported in provider: ${this.provider.name}`
+            );
+        }
+
+        this.currency = currency;
         return this;
     }
 
@@ -124,7 +145,7 @@ export class Cpk {
         pair = pair.toUpperCase();
 
         let [coin, currency] = pair.split("/");
-        if (!currency) currency = "USD";
+        if (!currency) currency = this.currency;
 
         // Check if coin is in the provider
         if (
