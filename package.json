@@ -1,6 +1,6 @@
 {
   "name": "cryptocurrency-price-kit",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "The best price kit you need when working with crypto currencies with realtime and multiple providers support.",
   "main": "index.js",
   "repository": "https://github.com/trapcodeio/cryptocurrency-price-kit.git",
