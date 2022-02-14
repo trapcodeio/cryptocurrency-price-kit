@@ -1,5 +1,5 @@
 # Cryptocurrency Price Kit 
-###### STAGE: `DEVELOPMENT`
+###### STAGE: `RFC`
 The best Nodejs price kit you need when working with cryptocurrencies with multiple providers support.
 
 ## Goal
