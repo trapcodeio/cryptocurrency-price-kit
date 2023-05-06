@@ -196,20 +196,24 @@ export = defineCpkProvider<{ apiKey: string }>((config) => {
 
         async getPrices(pairs) {
             const result: Record<string, number> = {};
-            const tasks = [];
+            const currency = pairs[0].currency;
 
-            for (const pair of pairs) {
-                tasks.push(
-                    new Promise(async (resolve) => {
-                        const price = await this.getPrice(pair.coin, pair.currency);
-                        result[pair.coin + "/" + pair.currency] = price;
-                        resolve(price);
-                    })
+            try {
+                const { data } = await axios.post(
+                    "https://api.livecoinwatch.com/coins/map",
+                    {
+                        codes: pairs.map((pair) => pair.coin),
+                        currency
+                    },
+                    { headers: { "x-api-key": config.apiKey } }
                 );
-            }
 
-            // Run all tasks
-            await Promise.all(tasks);
+                for (const pair of data) {
+                    result[pair.code + "/" + currency] = pair.rate;
+                }
+            } catch (e) {
+                throw new Error("Error fetching prices");
+            }
 
             return result;
         }

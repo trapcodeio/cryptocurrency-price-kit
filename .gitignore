@@ -9,3 +9,4 @@ yarn.lock
 *.d.ts
 
 tests/play.ts
+tests/.env
