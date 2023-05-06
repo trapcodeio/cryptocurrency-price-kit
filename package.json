@@ -15,19 +15,17 @@
     "play": "nodemon tests/play.js"
   },
   "devDependencies": {
-    "@types/lru-cache": "^5.1.1",
     "japa": "^4.0.0",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
     "ts-node": "^10.5.0",
-    "typescript": "^4.5.5"
+    "typescript": "^5.0.4",
+    "@xpresser/env": "^2.0.10"
   },
   "dependencies": {
-    "@xpresser/env": "^2.0.10",
-    "axios": "^0.25.0",
-    "brave-cache": "^0.1.5",
-    "lru-cache": "^6.0.0",
-    "object-collection": "^3.0.0"
+    "axios": "^1.4.0",
+    "brave-cache": "^0.2.2",
+    "lru-cache": "^9.1.1"
   },
   "keywords": [
     "coinmarketcap",
