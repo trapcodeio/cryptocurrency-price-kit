@@ -39,7 +39,7 @@ test.group("LiveCoinWatch", (g) => {
         assert.hasAllKeys(prices, ["BTC/EUR", "ETH/EUR", "BNB/EUR", "ADA/EUR"]);
     });
 
-    test.only("Get Many with multiple currencies", async (assert) => {
+    test("Get Many with multiple currencies", async (assert) => {
         const currencies = ["BTC/USD", "BTC/EUR", "ETH/USD", "ETH/EUR", "BNB/USD", "ADA/EUR"];
         const prices = await livecoinwatch.getMany(currencies, 120);
         assert.isObject(prices);
