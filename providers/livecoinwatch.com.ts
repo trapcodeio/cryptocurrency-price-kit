@@ -195,27 +195,43 @@ export = defineCpkProvider<{ apiKey: string }>((config) => {
         },
 
         async getPrices(pairs) {
-            const result: Record<string, number> = {};
-            const currency = pairs[0].currency;
+            let currencies = pairs.map((pair) => pair.currency);
+            // Remove duplicates
+            currencies = [...new Set(currencies)];
 
-            try {
-                const { data } = await axios.post(
-                    "https://api.livecoinwatch.com/coins/map",
-                    {
-                        codes: pairs.map((pair) => pair.coin),
-                        currency
-                    },
-                    { headers: { "x-api-key": config.apiKey } }
-                );
+            if (currencies.length > 1) {
+                let result: Record<string, number> = {};
 
-                for (const pair of data) {
-                    result[pair.code + "/" + currency] = pair.rate;
+                for (const c of currencies) {
+                    const thisPairs = pairs.filter((pair) => pair.currency === c);
+                    const prices = await this.getPrices(thisPairs);
+                    result = { ...result, ...prices };
                 }
-            } catch (e) {
-                throw new Error("Error fetching prices");
-            }
 
-            return result;
+                return result;
+            } else {
+                const result: Record<string, number> = {};
+                const currency = currencies[0];
+
+                try {
+                    const { data } = await axios.post(
+                        "https://api.livecoinwatch.com/coins/map",
+                        {
+                            codes: pairs.map((pair) => pair.coin),
+                            currency
+                        },
+                        { headers: { "x-api-key": config.apiKey } }
+                    );
+
+                    for (const pair of data) {
+                        result[pair.code + "/" + currency] = pair.rate;
+                    }
+                } catch (e) {
+                    throw new Error("Error fetching prices");
+                }
+
+                return result;
+            }
         }
     };
 });
