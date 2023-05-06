@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "prepublishOnly": "npx tsc",
+    "prepublishOnly": "npx tsc && npm run test",
     "watch": "tsc --watch",
     "test": "node JapaFile.js",
     "test-dev": "npx nodemon JapaFile.js --watch 'tests/**' --ext 'ts'",
